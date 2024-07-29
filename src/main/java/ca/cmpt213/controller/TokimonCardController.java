@@ -73,23 +73,24 @@ public class TokimonCardController {
     // and has resulted in one or more new resources being created
 
     @PostMapping("/api/tokimon/add")
-    public TokimonCard addTokimonCard(@RequestParam String name, @RequestParam String elementType, HttpServletResponse response){
+    public ResponseEntity<TokimonCard> addTokimonCard(@RequestBody TokimonCard newTokimonCard, HttpServletResponse response){
         System.out.println("POST /tokimonCard");
 
         try {
-            // Create a new TokimonCard object and set its attributes using the request parameters
-            TokimonCard newTokimonCard = new TokimonCard();
-            newTokimonCard.setName(name);
-            newTokimonCard.setElementType(validateElementType(elementType));
-            newTokimonCard.setTid(nextId.getAndIncrement()); // Assign the next ID to the new TokimonCard using the AtomicInteger
+            // Set the ID and validate the element type
+            newTokimonCard.setTid(nextId.getAndIncrement());
+            newTokimonCard.setElementType(validateElementType(newTokimonCard.getElementType().toString()));
+
             // .getAndIncrement() method - this method atomically increments the current value by one and returns the updated value
             tokimonCardList.addTokimonCard(newTokimonCard);
 
             response.setStatus(HttpServletResponse.SC_CREATED); // Set the response status to 201 Created
-            return newTokimonCard;
+
+            // ResponseEntity is a class that represents an HTTP response, including headers, body, and status
+            return ResponseEntity.status(HttpStatus.CREATED).body(newTokimonCard);
         } catch (InvalidElementTypeException e){
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST); // Set the response status to 400 Bad Request
-            return null;
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
         }
     }
 
@@ -110,6 +111,7 @@ public class TokimonCardController {
     public TokimonCard updateTokimonCard(@PathVariable long tid, @RequestBody TokimonCard newTokimonCard, HttpServletResponse response){
         System.out.println("PUT /tokimonCard/" + tid);
         try {
+            newTokimonCard.setName(newTokimonCard.getName());
             newTokimonCard.setElementType(validateElementType(newTokimonCard.getElementType().name()));
             tokimonCardList.updateTokimonCard(tid, newTokimonCard);
             response.setStatus(HttpServletResponse.SC_OK); // Set the response status to 200 OK
