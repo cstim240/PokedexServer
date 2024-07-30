@@ -65,9 +65,10 @@ public class TokimonCardControllerTest {
 	//this test method sends a POST request to the /api/tokimon/add endpoint and expects a 201 Created status code in return
 	@Test
 	public void testAddTokimonCard() throws Exception {
+		String tokimonCardJson = "{\"name\":\"Tokichu\",\"elementType\":\"ELECTRIC\"}";
+
 		mvc.perform(post("/api/tokimon/add")
-				.param("name", "Tokichu")
-				.param("elementType", "ELECTRIC"))
+				.content(tokimonCardJson).contentType(MediaType.APPLICATION_JSON))
 				.andExpect(status().isCreated());
 	}
 
