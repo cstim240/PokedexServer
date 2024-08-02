@@ -1,1 +1,1 @@
-[{"tid":1,"name":"Tokimander","elementType":"FIRE"},{"tid":2,"name":"Tokiurtle","elementType":"WATER"},{"tid":3,"name":"Tokisaur","elementType":"GRASS"}]
+[{"tid":1,"name":"Tokimander","elementType":"FIRE","rarity":9,"imageName":"charmander.png","healthPoints":100,"attackPoints":50},{"tid":2,"name":"Tokiurtle","elementType":"WATER","rarity":6,"imageName":"squirtle.png","healthPoints":100,"attackPoints":50},{"tid":3,"name":"Tokisaur","elementType":"GRASS","rarity":3,"imageName":"bulbasaur.png","healthPoints":100,"attackPoints":50}]

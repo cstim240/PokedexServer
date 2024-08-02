@@ -28,9 +28,9 @@ public class TokimonCardList {
         }
 
         //Add sample TokimonCards
-        TokimonCard tokimon1 = new TokimonCard(1, "Tokimander", TokimonCard.ElementType.FIRE);
-        TokimonCard tokimon2 = new TokimonCard(2, "Tokiurtle", TokimonCard.ElementType.WATER);
-        TokimonCard tokimon3 = new TokimonCard(3, "Tokisaur", TokimonCard.ElementType.GRASS);
+        TokimonCard tokimon1 = new TokimonCard(1, "Tokimander", TokimonCard.ElementType.FIRE, "charmander.png", 100, 50);
+        TokimonCard tokimon2 = new TokimonCard(2, "Tokiurtle", TokimonCard.ElementType.WATER, "squirtle.png", 100, 50);
+        TokimonCard tokimon3 = new TokimonCard(3, "Tokisaur", TokimonCard.ElementType.GRASS, "bulbasaur.png", 100, 50);
         tokimonCards.add(tokimon1);
         tokimonCards.add(tokimon2);
         tokimonCards.add(tokimon3);
@@ -109,6 +109,20 @@ public class TokimonCardList {
                     if (updatedTokimonCard.getElementType() != null){
                         currentCard.setElementType(updatedTokimonCard.getElementType());
                     }
+
+                    if (updatedTokimonCard.getImageName() != null){
+                        currentCard.setImageName(updatedTokimonCard.getImageName());
+                    } else if (updatedTokimonCard.getImageName() == null){
+                        currentCard.setImageName("unown.png");
+                    }
+
+                    if (updatedTokimonCard.getHealthPoints() != 0){
+                        currentCard.setHealthPoints(updatedTokimonCard.getHealthPoints());
+                    }
+                    if (updatedTokimonCard.getAttackPoints() != 0){
+                        currentCard.setAttackPoints(updatedTokimonCard.getAttackPoints());
+                    }
+
                     break;
                 }
             }
@@ -150,7 +164,7 @@ public class TokimonCardList {
     }
 
     private void updateJsonFile(){
-        try { //write the updated list of TokimonCards to the json file
+        try { //write the updated list of TokimonCards to the json file in the server
             mapper.writeValue(new File(FILE_PATH), tokimonCards);
         } catch (IOException e){
             e.printStackTrace();

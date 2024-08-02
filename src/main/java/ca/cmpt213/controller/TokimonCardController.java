@@ -1,17 +1,29 @@
+/*
+ * @author Tim Supan
+ * @version 1.0
+ * Course: CMPT 213 D100
+ * Assignment 5 - Spring Boot Application
+ */
+
 package ca.cmpt213.controller;
 
 import ca.cmpt213.exception.InvalidElementTypeException;
 import ca.cmpt213.exception.TokimonCardNotFoundException;
+import ca.cmpt213.model.TokimonCard;
 import jakarta.annotation.PostConstruct;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import ca.cmpt213.model.TokimonCard;
 import ca.cmpt213.model.TokimonCardList;
+import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -63,6 +75,8 @@ public class TokimonCardController {
         return null;
     }
 
+
+
     // the @PostMapping annotation tells Spring to use this method to handle specific URL POST requests
     // annotating a method indicates to Spring that this method should be invoked when the server receives a POST request to the specified URL
     // example: http://localhost:8080/tokimonCard with a POST request would invoke this method
@@ -102,6 +116,32 @@ public class TokimonCardController {
         }
     }
 
+    @PostMapping("/api/tokimon/uploadPhoto")
+    public String uploadFile(@RequestParam("file")MultipartFile file, HttpServletResponse response) throws IOException {
+        if (file.isEmpty()){
+            response.setStatus(HttpServletResponse.SC_NOT_FOUND); // Set the response status to 400 Bad Request
+            return "File is not found";
+        }
+
+        //validate file type
+        String contentType = file.getContentType();
+        if (!"image/png".equals(contentType) && !"image/jpeg".equals(contentType)){
+            response.setStatus(HttpServletResponse.SC_BAD_REQUEST); // Set the response status to 400 Bad Request
+            return "Invalid file type. Only PNG and JPEG files are allowed";
+        }
+
+        // Define path to the server's resources folder
+        String resourcesPath = "src/main/resources/static/images/";
+        Path path = Paths.get(resourcesPath, file.getOriginalFilename());
+
+        // Save the file to the resoruces folder
+        System.out.println(file.getOriginalFilename());
+        // arguments of .copy: InputStream source, Path target, CopyOption... options
+        Files.copy(file.getInputStream(), path, StandardCopyOption.REPLACE_EXISTING);
+        // StandardCopyOption.REPLACE_EXISTING is used to replace the file if it already exists
+        return "File uploaded successfully";
+    }
+
     // the @PutMapping annotation tells Spring to use this method to handle specific URL PUT requests
 
     // the @PathVariable annotation is used to extract values from the URL path and bind them to method parameters
@@ -113,6 +153,9 @@ public class TokimonCardController {
         try {
             newTokimonCard.setName(newTokimonCard.getName());
             newTokimonCard.setElementType(validateElementType(newTokimonCard.getElementType().name()));
+            newTokimonCard.setImageName(newTokimonCard.getImageName());
+            newTokimonCard.setHealthPoints(newTokimonCard.getHealthPoints());
+            newTokimonCard.setAttackPoints(newTokimonCard.getAttackPoints());
             tokimonCardList.updateTokimonCard(tid, newTokimonCard);
             response.setStatus(HttpServletResponse.SC_OK); // Set the response status to 200 OK
             return newTokimonCard;
