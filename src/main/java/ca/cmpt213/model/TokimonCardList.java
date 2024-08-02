@@ -29,8 +29,8 @@ public class TokimonCardList {
 
         //Add sample TokimonCards
         TokimonCard tokimon1 = new TokimonCard(1, "Tokimander", TokimonCard.ElementType.FIRE, "charmander.png", 100, 50);
-        TokimonCard tokimon2 = new TokimonCard(2, "Tokiurtle", TokimonCard.ElementType.WATER, "squirtle.png", 100, 50);
-        TokimonCard tokimon3 = new TokimonCard(3, "Tokisaur", TokimonCard.ElementType.GRASS, "bulbasaur.png", 100, 50);
+        TokimonCard tokimon2 = new TokimonCard(2, "Tokiurtle", TokimonCard.ElementType.WATER, "squirtle.png", 80, 60);
+        TokimonCard tokimon3 = new TokimonCard(3, "Tokisaur", TokimonCard.ElementType.GRASS, "bulbasaur.png", 60, 85);
         tokimonCards.add(tokimon1);
         tokimonCards.add(tokimon2);
         tokimonCards.add(tokimon3);

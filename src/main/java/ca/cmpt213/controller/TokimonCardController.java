@@ -75,8 +75,6 @@ public class TokimonCardController {
         return null;
     }
 
-
-
     // the @PostMapping annotation tells Spring to use this method to handle specific URL POST requests
     // annotating a method indicates to Spring that this method should be invoked when the server receives a POST request to the specified URL
     // example: http://localhost:8080/tokimonCard with a POST request would invoke this method
